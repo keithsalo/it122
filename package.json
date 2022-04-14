@@ -1,0 +1,12 @@
+{
+  "name": "it122",
+  "version": "1.0.0",
+  "description": "package.json week 1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "Keith Salo",
+  "license": "ISC"
+}

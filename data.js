@@ -6,18 +6,20 @@ let cars = [
     {   name : "acura", model : "accord", year : 2014, color : "red"}
     ];
 
-    exports.getAll = () => {
+    export const getAll = () => {
         return cars;
     }
 
 // export individual features
-export let myVariable = Math.sqrt(2);
-    export const myFunction = (title) => {
-        // search the books array
-            return books.find((book) => {
-              return book.title === title;
+
+    export const getItem = (name) => {
+        // search the cars array
+            return cars.find((car) => {
+              return car.name === name;
             });
     }
 
 console.log(cars);
+
+
     

@@ -10,18 +10,18 @@ http.createServer((req,res) => {
 console.log(path)
 let parts = req.url.split("?"); // separate route from query string
 let query = parse(parts[1]); // convert query string to a JS object
-console.log(parts)
-console.log(query)
+console.log(parts) // check 1st half of url
+console.log(query) // check 2nd half of url
     switch(parts[0]) {  // using first half of url
         
         case '/':
             res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end(JSON.stringify(data.getAll()))
+            res.end(JSON.stringify(data.getAll())) // converts to a string
             break;
         
         case '/detail':
             res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end(JSON.stringify(data.getItem(query['name'])))
+            res.end(JSON.stringify(data.getItem(query['name']))) // converts to a string
            
 
             break;

@@ -7,6 +7,7 @@ import express from 'express';
 import  path from 'path';
 import { dirname } from 'path'; //
 import { fileURLToPath } from 'url';
+import { name } from 'ejs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);//
@@ -21,26 +22,22 @@ app.use(express.static('public')); // set location for static file
 
 // send static file as response
    app.get('/', (req,res) => {
-    let cars = [
-        { name : "subaru", model : "outback", year : 2014, color : "blue"},
-        { name : "ford", model : "ranger", year : 2001, color : "white"},
-        {  name : "audi", model : "a6", year : 2020, color : "black"},
-        {  name : "jeep", model : "wrangler", year : 2009, color : "silver"},
-        {   name : "acura", model : "accord", year : 2014, color : "red"}
-        ]
-    res.type('text/html');
-    res.render('home', {cars});
+    
+    
+    res.render('home', {cars:data.getAll()});
     
     // res.sendFile(path.join(__dirname, 'home.html'));
    });
    
    // send plain text response
    app.get('/detail', (req,res) => {
-    res.type('text/plain');
+    
     console.log(req.query);
     // res.end("Detail for " + req.query.name)
     // res.send('Detail page');
-    res.render("details"); // render template in views dir
+    // res.render("details", {result:data.getItem('name')}); // render template in views dir
+    let result = data.getItem(req.query.name);
+    res.render('details', {model: req.query.model, result: result });
     // res.sendFile(path.join(__dirname, 'details.html'));
    });
    

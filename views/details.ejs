@@ -1,5 +1,12 @@
 <link href="/css/styles.css" rel="stylesheet" type="text/css">
-<h2>add link back to home</h2>
+<a href="./">Home</a>
 <hr>
-<h3>______ details</h3>
-<!-- test -->
+<h3><%= result.name %> details</h3>
+
+<% if (result) { %>
+<li>Model: <%= result.model %>
+<li>Year: <%= result.year %>
+<li>Color: <%= result.color %>
+    <% } else { %>
+    not found
+    <% } %>

@@ -21,5 +21,5 @@ let cars = [
 
 console.log(cars);
 
-
+export default cars;
     

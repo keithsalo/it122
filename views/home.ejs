@@ -1,0 +1,11 @@
+<link href="/css/styles.css" rel="stylesheet" type="text/css">
+<h2>Home</h2>
+<hr>
+<h3>Cars</h3>
+
+
+<ul>
+    <% cars.forEach(function(cars) { %>
+    <li><a href="/detail?name=<%= cars.name %>"> <%= cars.name %> </li>
+    <% }); %>
+</ul>

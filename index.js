@@ -1,10 +1,61 @@
 import * as data from './data.js'
 import http from 'http';
+import fs from 'fs';
 import { parse } from "querystring";
+import express from 'express';
+
+import  path from 'path';
+import { dirname } from 'path'; //
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);//
+
+const app = express();
+app.set('port', process.env.PORT || 3000);
+app.use(express.static('./public')); // set location for static files
+app.use(express.urlencoded()); //Parse URL-encoded bodies
+app.set('view engine', 'ejs'); // set the view engine to ejs
+app.use(express.static('public')); // set location for static file
 
 
+// send static file as response
+   app.get('/', (req,res) => {
+    let cars = [
+        { name : "subaru", model : "outback", year : 2014, color : "blue"},
+        { name : "ford", model : "ranger", year : 2001, color : "white"},
+        {  name : "audi", model : "a6", year : 2020, color : "black"},
+        {  name : "jeep", model : "wrangler", year : 2009, color : "silver"},
+        {   name : "acura", model : "accord", year : 2014, color : "red"}
+        ]
+    res.type('text/html');
+    res.render('home', {cars});
+    
+    // res.sendFile(path.join(__dirname, 'home.html'));
+   });
+   
+   // send plain text response
+   app.get('/detail', (req,res) => {
+    res.type('text/plain');
+    console.log(req.query);
+    // res.end("Detail for " + req.query.name)
+    // res.send('Detail page');
+    res.render("details"); // render template in views dir
+    // res.sendFile(path.join(__dirname, 'details.html'));
+   });
+   
+   // define 404 handler
+   app.use((req,res) => {
+    res.type('text/plain');
+    res.status(404);
+    res.send('404 - Not found');
+   });
 
+   app.listen(app.get('port'), () => {
+    console.log('Express started');
+   });
 
+/*
 http.createServer((req,res) => {
     var path = req.url.toLowerCase();
 console.log(path)
@@ -37,3 +88,4 @@ console.log(query) // check 2nd half of url
             break;
     }
 }).listen(process.env.PORT || 3000);
+*/

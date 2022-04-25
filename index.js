@@ -3,6 +3,8 @@ import http from 'http';
 import fs from 'fs';
 import { parse } from "querystring";
 import express from 'express';
+import * as favicon from "serve-favicon";
+
 
 import  path from 'path';
 import { dirname } from 'path'; //
@@ -12,18 +14,22 @@ import { name } from 'ejs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);//
 
+
+
 const app = express();
 app.set('port', process.env.PORT || 3000);
 app.use(express.static('./public')); // set location for static files
 app.use(express.urlencoded()); //Parse URL-encoded bodies
 app.set('view engine', 'ejs'); // set the view engine to ejs
-app.use(express.static('public')); // set location for static file
+// app.use(express.static('public')); // set location for static file
+app.use(express.static(path.join(__dirname, 'public')))
+
 
 
 // send static file as response
    app.get('/', (req,res) => {
     
-    
+   
     res.render('home', {cars:data.getAll()});
     
     // res.sendFile(path.join(__dirname, 'home.html'));
@@ -32,6 +38,7 @@ app.use(express.static('public')); // set location for static file
    // send plain text response
    app.get('/detail', (req,res) => {
     
+    app.use(express.static(__dirname + '/images'));
     console.log(req.query);
     // res.end("Detail for " + req.query.name)
     // res.send('Detail page');
@@ -40,6 +47,11 @@ app.use(express.static('public')); // set location for static file
     res.render('details', {model: req.query.model, result: result });
     // res.sendFile(path.join(__dirname, 'details.html'));
    });
+
+ 
+  
+
+   
    
    // define 404 handler
    app.use((req,res) => {

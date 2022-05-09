@@ -5,6 +5,8 @@
   "description": "package.json week 1",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
+    "lint": "eslint \"**/*.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Keith Salo",
@@ -13,7 +15,13 @@
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-favicon": "^2.0.1",
+    "mongoose": "^6.3.2",
     "nodemon": "^2.0.15",
     "serve-favicon": "^2.5.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^8.14.0",
+    "mocha": "^10.0.0"
   }
 }

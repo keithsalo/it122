@@ -1,15 +1,18 @@
-import * as data from './data.js'
-import http from 'http';
-import fs from 'fs';
-import { parse } from "querystring";
+// import * as data from './data.js'
+// import http from 'http';
+// import fs from 'fs';
+// import { parse } from "querystring";
 import express from 'express';
-import * as favicon from "serve-favicon";
+import { Car } from "./Cars.js";
+// import * as favicon from "serve-favicon";
 
 
 import  path from 'path';
 import { dirname } from 'path'; //
 import { fileURLToPath } from 'url';
-import { name } from 'ejs';
+// import { name } from 'ejs';
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);//
@@ -25,28 +28,69 @@ app.set('view engine', 'ejs'); // set the view engine to ejs
 app.use(express.static(path.join(__dirname, 'public')))
 
 
+app.get('/', (req, res, next) => {
+    Car.find({}).lean()
+      .then((cars) => {
+        // respond to browser only after db query completes
+        res.render('home', { cars });
+      })
+      .catch(err => next(err))
+});
+
+//detail route
+app.get('/detail', (req,res,next) => {
+    // db query can use request parameters
+    Car.findOne({ name:req.query.name }).lean()
+        .then((car) => {
+            res.render('details', {result: car} );
+        })
+        .catch(err => next(err));
+});
+
+//delete route
+// app.get('/delete', (req,res,next) => {
+//     // db query can use request parameters
+//     Car.deleteOne({ name:req.query.name }).lean()
+//         .then((car) => {
+//             res.send(car.deletedCount > 0 ? name + ' deleted' : name + ' not in database');
+//         })
+//         .catch(err => next(err));
+// });
+
+
+
+
+// app.get('/detail', (req,res,next) => {
+//     // db query can use request parameters
+//     Car.findOne({ name:req.query.name }).lean()
+//         .then((car) => {
+//             res.render('details', {result: car} );
+//         })
+//         .catch(err => next(err));
+// });
 
 // send static file as response
-   app.get('/', (req,res) => {
+//    app.get('/', (req,res) => {
     
    
-    res.render('home', {cars:data.getAll()});
+//     res.render('home', {cars:data.getAll()});
     
-    // res.sendFile(path.join(__dirname, 'home.html'));
-   });
+//     // res.sendFile(path.join(__dirname, 'home.html'));
+//    });
    
-   // send plain text response
-   app.get('/detail', (req,res) => {
+   
+//    // send plain text response
+//    app.get('/detail', (req,res) => {
     
-    app.use(express.static(__dirname + '/images'));
-    console.log(req.query);
-    // res.end("Detail for " + req.query.name)
-    // res.send('Detail page');
-    // res.render("details", {result:data.getItem('name')}); // render template in views dir
-    let result = data.getItem(req.query.name);
-    res.render('details', {model: req.query.model, result: result });
-    // res.sendFile(path.join(__dirname, 'details.html'));
-   });
+//     app.use(express.static(__dirname + '/images'));
+//     console.log(req.query);
+//     // res.end("Detail for " + req.query.name)
+//     // res.send('Detail page');
+//     // res.render("details", {result:data.getItem('name')}); // render template in views dir
+//     let result = data.getItem(req.query.name);
+//     res.render('details', {model: req.query.model, result: result });
+//     // res.sendFile(path.join(__dirname, 'details.html'));
+//    });
 
  
   

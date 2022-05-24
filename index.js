@@ -1,19 +1,12 @@
 /* eslint-disable no-unused-vars */
-// import * as data from './data.js'
-// import http from 'http';
-// import fs from 'fs';
-// import { parse } from "querystring";
 import express from 'express';
 import { Car } from "./Cars.js";
 import cors from 'cors';
-// import * as favicon from "serve-favicon";
-
-
 import  path from 'path';
 import { dirname } from 'path'; //
 import { fileURLToPath } from 'url';
 import { name } from 'ejs';
-// import { name } from 'ejs';
+
 
 
 
@@ -37,20 +30,17 @@ app.get('/', (req, res, next) => {
     Car.find({}).lean()
       .then((cars) => {
         // respond to browser only after db query completes
-        res.render('home', { cars });
+        res.render('react', {cars: JSON.stringify(cars)});
       })
       .catch(err => next(err))
 });
-
-
-
 
 //detail route
 app.get('/detail', (req,res) => {
     // db query can use request parameters
     Car.findOne({ name:req.query.name }).lean()
         .then((car) => {
-            res.render('details', {result: car} );
+            res.render('details', {result: car} );//change to res.json +all api routes
         })
         .catch(err => { return res.status(500).send('Error occurred: database error.')} );
 });
@@ -65,7 +55,7 @@ app.get('/api/cars', (req, res, next) => {
         // respond to browser only after db query completes
         res.json(cars);
       })
-      .catch(err => { return res.status(500).send('Error occurred: database error.')} );
+      .catch(err => next(err))
 });
 
 
@@ -79,7 +69,7 @@ app.get('/api/cars/:name', (req,res) => {
         .catch(err => { return res.status(500).send('Error occurred: database error.')} );
 });
 
-// api delete route --  getting 404 error
+// api delete route -- 
 app.get('/api/delete', (req,res) => {
    // db query can use request parameters
    Car.deleteOne({ name:req.query.name }).lean()
@@ -114,94 +104,4 @@ app.post('/api/add', (req,res) => {
     console.log('Express started');
    });
 
-   // // delete route
-// app.get('/delete', (req,res) => {
-//     // db query can use request parameters
-//     Car.deleteOne({ name:req.query.name })
-//         .then(() => {
-//             res.send(req.params.name + ' deleted'  .name + ' from database');
-//         })
-//         .catch(err => { return res.status(500).send('Error occurred: database error.')} );
-// });
-
-
-// // insert or update a single record --add route2
-// const newCar = {'name':'subaru', 'model':'outback', 'year': 2014, 'color':'blue' }
-// Car.updateOne({'name':'subaru'}, newCar, {upsert:true}, (err, result) => {
-//   if (err) return next(err);
-//   console.log(result);
-//   // other code here
-// });
-
-
-
-
-// app.get('/detail', (req,res,next) => {
-//     // db query can use request parameters
-//     Car.findOne({ name:req.query.name }).lean()
-//         .then((car) => {
-//             res.render('details', {result: car} );
-//         })
-//         .catch(err => next(err));
-// });
-
-// send static file as response
-//    app.get('/', (req,res) => {
-    
    
-//     res.render('home', {cars:data.getAll()});
-    
-//     // res.sendFile(path.join(__dirname, 'home.html'));
-//    });
-   
-   
-//    // send plain text response
-//    app.get('/detail', (req,res) => {
-    
-//     app.use(express.static(__dirname + '/images'));
-//     console.log(req.query);
-//     // res.end("Detail for " + req.query.name)
-//     // res.send('Detail page');
-//     // res.render("details", {result:data.getItem('name')}); // render template in views dir
-//     let result = data.getItem(req.query.name);
-//     res.render('details', {model: req.query.model, result: result });
-//     // res.sendFile(path.join(__dirname, 'details.html'));
-//    });
-
- 
-
-
-/*
-http.createServer((req,res) => {
-    var path = req.url.toLowerCase();
-console.log(path)
-let parts = req.url.split("?"); // separate route from query string
-let query = parse(parts[1]); // convert query string to a JS object
-console.log(parts) // check 1st half of url
-console.log(query) // check 2nd half of url
-    switch(parts[0]) {  // using first half of url
-        
-        case '/':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end(JSON.stringify(data.getAll())) // converts to a string
-            break;
-        
-        case '/detail':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end(JSON.stringify(data.getItem(query['name']))) // converts to a string
-           
-
-            break;
-
-        case '/about':
-            res.writeHead(200, {'Content-Type': 'text/plain'});
-            res.end('I am in the Web Development program this is my fifth quarter and have only taken online classes so far.  I work full time and am taking two classes a quarter.   I love the outdoors and hiking. Unfortunately with a busy schedule it can be challenging to make time for these things.');
-            break;
-
-        default:
-            res.writeHead(404, {'Content-Type': 'text/plain'});
-            res.end('Not found');
-            break;
-    }
-}).listen(process.env.PORT || 3000);
-*/

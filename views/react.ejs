@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <title>SPA week 7</title>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<style>
+  #carList {
+    color: red;
+  }
+</style>
+
+<body>
+
+  <div id="root"></div>
+  <script type="text/babel">
+
+    const cars = <%- cars %>;
+    
+    console.log(cars)
+
+  
+    const App = () => {
+     
+return <ul> 
+  {cars.map(item => <li key={item.name}><a href={`/detail?name=${item.name}`}>
+    {item.name} 
+    </a></li>)}
+  </ul>
+  
+}
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+
+</html>

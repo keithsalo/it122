@@ -24,4 +24,6 @@ const carSchema = new Schema({
  color: String
 });
 
+
 export const Car = mongoose.model('Car', carSchema);
+

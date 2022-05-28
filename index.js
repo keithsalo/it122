@@ -55,18 +55,18 @@ app.get('/api/cars', (req, res, next) => {
         // respond to browser only after db query completes
         res.json(cars);
       })
-      .catch(err => next(err))
+      .catch(err => next(err))  // fix this error 
 });
 
 
 // api detail route
-app.get('/api/cars/:name', (req,res) => {
+app.get('/api/cars/:name', (req,res,next) => {//next?
     // db query can use request parameters
     Car.findOne({ name:req.params.name }).lean()
         .then((car) => {
             res.json(car);
         })
-        .catch(err => { return res.status(500).send('Error occurred: database error.')} );
+        .catch(err => { return res.status(500).send('Error occurred: database error.')} );//error
 });
 
 // api delete route -- 

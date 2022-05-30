@@ -16,6 +16,9 @@
   <hr />
 
   <div id="root"></div>
+  <div class="homecar">
+    <img src="/images/homecar1.png" alt="basic car " width="300">
+  </div>
   <script type="text/babel">
 
     // const cars = <%- cars %>;
@@ -28,6 +31,7 @@
     </li>);
     return <ul>{listItems}</ul>
 }
+
 
 const CarsDetail = (props) => {
 
@@ -54,6 +58,7 @@ class CarApp extends React.Component {
     this.selectItem = this.selectItem.bind(this);
     this.clearForm = this.clearForm.bind(this);//clear still works commented out//
     this.showChange = this.showChange.bind(this);
+    
     }
 
    
@@ -63,6 +68,7 @@ class CarApp extends React.Component {
     return item.name === event.target.innerText;
   });
   this.setState({currentItem: found})
+  
 }
  //click event handler
   showDetail = (event) => {
@@ -94,22 +100,12 @@ class CarApp extends React.Component {
   }
 }
 
+
+
     ReactDOM.render(
       <div><CarApp /></div>, 
-
       document.getElementById('root'));
 </script>
 </body>
 
 </html>
-<!-- // const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1)
-
-// function capitalizeFirstLetter(string) {
-//   return string.charAt(0).toUpperCase() + string.slice(1);
-// }
-
-// console.log(capitalizeFirstLetter('foo')); // Foo -->
-
-<!-- <React.StrictMode>
-     <CarApp />
-</React.StrictMode>, -->

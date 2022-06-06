@@ -64,13 +64,19 @@ body {
 
   button {
     margin-top: 5px;
-    margin-left: 155px;
+    margin-left: 20px;
   }
 
-  .homecar {
+  .home-car {
     float: right;
-    margin-right: 80em;
+    margin-right: 50em;
     position: relative; 
     top: -520px;
   }
+
+  /* @media only screen and (max-width: 800px) {
+    img {
+    width: 100%;
+    }
+    } */
   

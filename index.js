@@ -10,6 +10,7 @@ import { name } from 'ejs';
 
 
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);//
 
@@ -36,13 +37,13 @@ app.get('/', (req, res, next) => {
 });
 
 //detail route
-app.get('/detail', (req,res) => {
+app.get('/detail', (req,res,next) => {
     // db query can use request parameters
     Car.findOne({ name:req.query.name }).lean()
         .then((car) => {
             res.render('details', {result: car} );//change to res.json +all api routes
         })
-        .catch(err => { return res.status(500).send('Error occurred: database error.')} );
+        .catch(err => next(err))
 });
 
 
@@ -66,31 +67,49 @@ app.get('/api/cars/:name', (req,res,next) => {//next?
         .then((car) => {
             res.json(car);
         })
-        .catch(err => { return res.status(500).send('Error occurred: database error.')} );//error
+        .catch(err => next(err))
 });
 
 // api delete route -- 
-app.get('/api/delete', (req,res) => {
-   // db query can use request parameters
-   Car.deleteOne({ name:req.query.name }).lean()
-   .then(() => {
+// app.get('/api/delete/:name', (req,res,next) => {
+//     console.log(req.query.name)
+//    // db query can use request parameters
+//    Car.findOneAndDelete({"name":req.query.name}).lean()
+//    .then(() => {
        
-       res.json(req.params.name + ' deleted'  .name + ' from database');
-   })
-   .catch(err => { return res.status(500).send('Error occurred: database error.')} );
+//        res.json(req.params.name + ' deleted'  .name + ' from database');
+//    })
+//    .catch(err => { return res.status(500).send('Error occurred: database error.')
+
+//     });
+// });
+
+// api V2 delete route -- 
+app.get('/api/delete/:name', (req,res, next) => {
+    Car.deleteOne({"name":req.params.name }, (err, result) => {
+        if (err) return next(err);
+        res.json({"deleted": result});
+        
+    });
+});
+//V2
+
+app.post('/api/add', (req,res, next) => {
+    // find & update existing item, or add new 
+    if (!req.body._id) { // insert new document
+        let car = new Car(req.body);
+        car.save((err,newCar) => {
+            if (err) return next(err);
+            res.json({updated: 0, _id: newCar._id});
+        });
+    } else { // update existing document
+        Car.updateOne({ _id: req.body._id}, {name:req.body.name, year: req.body.year, color: req.body.color }, (err, result) => {//
+            if (err) return next(err);//
+            res.json({updated: result.nModified, _id: req.body._id, name: req.body.name});
+        });
+    }
 });
 
-
-//  api add route
-app.post('/api/add', (req,res) => {
-    // db query can use request parameters
-    const newCar = {'name':'volvo', 'model':'v70', 'year': 2005, 'color':'white' }
-    Car.updateOne({'name':'volvo'}, newCar, {upsert:true}).lean()
-         .then((car) => {
-            res.json(car);
-        })
-        .catch(err => { return res.status(500).send('Error occurred: database error.')} );
-});
 
 
  // define 404 handler
@@ -103,5 +122,3 @@ app.post('/api/add', (req,res) => {
    app.listen(app.get('port'), () => {
     console.log('Express started');
    });
-
-   

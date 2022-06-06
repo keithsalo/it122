@@ -16,11 +16,10 @@
   <hr />
 
   <div id="root"></div>
-  <div class="homecar">
+  <div class="home-car">
     <img src="/images/homecar1.png" alt="basic car " width="300">
   </div>
   <script type="text/babel">
-
     // const cars = <%- cars %>;
     
     const Cars = (props) => {
@@ -31,10 +30,7 @@
     </li>);
     return <ul>{listItems}</ul>
 }
-
-
 const CarsDetail = (props) => {
-
 return <div>
   <hr/>
   <h3>Car Details</h3>
@@ -45,9 +41,10 @@ return <div>
       <p>Color: <input type="text" name="color" onChange={props.showChange} value={props.item.color || ""} ></input></p>
   </form>
       <button name="clear" onClick={props.clearForm}>Clear</button>
+      <button name="save" onClick={props.saveItem}>Save</button>
+      <button name="delete" onClick={props.deleteItem}>Delete</button>
        </div>
 }
-
 class CarApp extends React.Component {
   constructor(props) {
     super(props);
@@ -58,8 +55,90 @@ class CarApp extends React.Component {
     this.selectItem = this.selectItem.bind(this);
     this.clearForm = this.clearForm.bind(this);//clear still works commented out//
     this.showChange = this.showChange.bind(this);
+    this.saveItem = this.saveItem.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
     
     }
+
+    saveItem = () => {
+      console.log(this.state.currentItem)
+      if (this.state.currentItem == {}) return
+     
+      let newItem = this.state.currentItem;
+    
+
+      fetch("/api/add", {
+    method: "POST",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newItem)
+
+      })
+      .then(res => res.json())
+      .then((json) => { //update  car list
+              console.log(json)
+              let newList = this.state.items;
+              // console.log(newList)
+              if(!newItem.name){ //if new car, add to list
+                newList.push(newItem);
+                this.setState({items:newList, currentItem: {} });
+                // console.log(newList)
+              }        
+              else{ //if item was updated, clear the form 
+                  this.setState({currentItem: {} });
+              }       
+          });
+
+        
+        }
+
+        // //ks
+    deleteItem = () => {
+      // console.log(this.state.currentItem)
+      if (this.state.currentItem == {}) return
+
+    let deleteId = this.state.currentItem.name;
+     
+      let url = "/api/delete/" + deleteId
+      fetch(url)
+        .then((res) => {
+             res.json();
+        })
+        
+        .then((item) => { //update list of cars by removing deleted item
+            let newList = this.state.items.filter(item => item.name !== deleteId)
+            this.setState({ items: newList, currentItem: {} });
+            
+           
+        })
+        this.setState({currentItem: {} });//clear form
+        // console.log(json)
+       
+    }
+
+
+      //     deleteItem = () => {
+      // console.log(this.state.currentItem)
+      // if (this.state.currentItem == {}) return
+
+      // let deleteId = this.state.currentItem.name
+     
+      // let url = "/api/delete/" + deleteId
+      // fetch(url)
+      // .then(res => res.json())
+      //       .then((json) => {
+      //         // console.log(items)
+      //           // if delete succeeded, update master list
+      //           // console.log(json.deleted)
+      //           // if (json.deleted.deletedCount > 0) {
+      //             let newList = this.state.items.filter(items => items.name !== deleteId.name)
+      //             console.log(items.name)
+      //             console.log(deleteId.name)
+      //               this.setState({items: newList, currentItem: {}})
+      //           // }
+      //        })
+      //   }
+
+
 
    
     
@@ -76,14 +155,11 @@ class CarApp extends React.Component {
         let newItem = this.state.items.find((item) => item.name == name);
         this.setState({"currentItem": newItem})
     }
-
    showChange = (event) => {
      let newItem = this.state.currentItem;
      newItem[event.target.name] = event.target.value;
      this.setState({currentItem: newItem})
-
    }
-
    clearForm = () =>
    this.setState({currentItem:{}})
   
@@ -95,13 +171,13 @@ class CarApp extends React.Component {
         item={this.state.currentItem} 
         showChange={this.showChange}
         clearForm={this.clearForm}
+        saveItem={this.saveItem}
+        deleteItem={this.deleteItem}
+
     />
   </div> );
   }
 }
-
-
-
     ReactDOM.render(
       <div><CarApp /></div>, 
       document.getElementById('root'));

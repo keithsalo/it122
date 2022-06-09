@@ -68,7 +68,7 @@ body {
   }
 
   .home-car {
-    float: right;
+    margin-left: 10em;
     margin-right: 50em;
     position: relative; 
     top: -520px;

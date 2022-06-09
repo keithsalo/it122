@@ -59,7 +59,39 @@ class CarApp extends React.Component {
     this.deleteItem = this.deleteItem.bind(this);
     
     }
+    // saveItem = () => {
+    //   console.log(this.state.currentItem)
+    //   if (this.state.currentItem == {}) return
+     
+    //   let newItem = this.state.currentItem;
+    
 
+    //   fetch("/api/add", {
+    // method: "POST",
+    // headers: { 'Content-Type': 'application/json' },
+    // body: JSON.stringify(newItem)
+
+    //   })
+    //   .then(res => res.json())
+    //   .then((json) => { //update  car list
+    //           console.log(json)
+    //           let newList = this.state.items;
+    //           // console.log(newList)
+    //           if(!newItem.name){ //if new car, add to list  ///removing !/// specifying name somewhere
+    //             newList.push(newItem);
+    //             this.setState({items:newList, currentItem: {} });
+    //             // console.log(newList)
+    //           }        
+    //           else{ //if item was updated, clear the form 
+    //               this.setState({currentItem: {} });
+    //           }       
+    //       });
+
+        
+    //     }
+
+
+//2.0
     saveItem = () => {
       console.log(this.state.currentItem)
       if (this.state.currentItem == {}) return
@@ -74,14 +106,15 @@ class CarApp extends React.Component {
 
       })
       .then(res => res.json())
-      .then((json) => { //update  car list
-              console.log(json)
+      .then((items) => { //update  car list
+              // console.log("seethis",json)
               let newList = this.state.items;
               // console.log(newList)
-              if(!newItem.name){ //if new car, add to list
+              if(!newItem._id){ //if new car, add to list  ///removing !/// specifying name somewhere or updated?
                 newList.push(newItem);
+               
                 this.setState({items:newList, currentItem: {} });
-                // console.log(newList)
+                console.log("this is the newItem", newItem);
               }        
               else{ //if item was updated, clear the form 
                   this.setState({currentItem: {} });

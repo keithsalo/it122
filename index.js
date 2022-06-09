@@ -48,15 +48,14 @@ app.get('/detail', (req,res,next) => {
 app.get('/api/cars', (req, res, next) => {
     Car.find({}).lean()
       .then((cars) => {
-        // respond to browser only after db query completes
         res.json(cars);
       })
-      .catch(err => next(err))  // fix this error 
+      .catch(err => next(err))  
 });
 
 
 // api detail route
-app.get('/api/cars/:name', (req,res,next) => {//next?
+app.get('/api/cars/:name', (req,res,next) => {
     // db query can use request parameters
     Car.findOne({ name:req.params.name }).lean()
         .then((car) => {
@@ -65,21 +64,8 @@ app.get('/api/cars/:name', (req,res,next) => {//next?
         .catch(err => next(err))
 });
 
+
 // api delete route -- 
-// app.get('/api/delete/:name', (req,res,next) => {
-//     console.log(req.query.name)
-//    // db query can use request parameters
-//    Car.findOneAndDelete({"name":req.query.name}).lean()
-//    .then(() => {
-       
-//        res.json(req.params.name + ' deleted'  .name + ' from database');
-//    })
-//    .catch(err => { return res.status(500).send('Error occurred: database error.')
-
-//     });
-// });
-
-// api V2 delete route -- 
 app.get('/api/delete/:name', (req,res, next) => {
     Car.deleteOne({"name":req.params.name }, (err, result) => {
         if (err) return next(err);
@@ -87,7 +73,7 @@ app.get('/api/delete/:name', (req,res, next) => {
         
     });
 });
-//V2
+
 
 app.post('/api/add', (req,res, next) => {
     // find & update existing item, or add new 

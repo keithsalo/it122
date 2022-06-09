@@ -20,14 +20,13 @@
     <img src="/images/homecar1.png" alt="basic car " width="300">
   </div>
   <script type="text/babel">
-    // const cars = <%- cars %>;
-    
+
     const Cars = (props) => {
   
   const listItems = props.data.map((item) =>
   <li key={item._id} id={item._id} onClick={props.clickHandler}>
     {item.name}
-    </li>);
+      </li>);
     return <ul>{listItems}</ul>
 }
 const CarsDetail = (props) => {
@@ -53,45 +52,14 @@ class CarApp extends React.Component {
       currentItem: {}
     };
     this.selectItem = this.selectItem.bind(this);
-    this.clearForm = this.clearForm.bind(this);//clear still works commented out//
+    this.clearForm = this.clearForm.bind(this);
     this.showChange = this.showChange.bind(this);
     this.saveItem = this.saveItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     
     }
-    // saveItem = () => {
-    //   console.log(this.state.currentItem)
-    //   if (this.state.currentItem == {}) return
-     
-    //   let newItem = this.state.currentItem;
-    
+   
 
-    //   fetch("/api/add", {
-    // method: "POST",
-    // headers: { 'Content-Type': 'application/json' },
-    // body: JSON.stringify(newItem)
-
-    //   })
-    //   .then(res => res.json())
-    //   .then((json) => { //update  car list
-    //           console.log(json)
-    //           let newList = this.state.items;
-    //           // console.log(newList)
-    //           if(!newItem.name){ //if new car, add to list  ///removing !/// specifying name somewhere
-    //             newList.push(newItem);
-    //             this.setState({items:newList, currentItem: {} });
-    //             // console.log(newList)
-    //           }        
-    //           else{ //if item was updated, clear the form 
-    //               this.setState({currentItem: {} });
-    //           }       
-    //       });
-
-        
-    //     }
-
-
-//2.0
     saveItem = () => {
       console.log(this.state.currentItem)
       if (this.state.currentItem == {}) return
@@ -107,16 +75,16 @@ class CarApp extends React.Component {
       })
       .then(res => res.json())
       .then((items) => { //update  car list
-              // console.log("seethis",json)
+             
               let newList = this.state.items;
-              // console.log(newList)
-              if(!newItem._id){ //if new car, add to list  ///removing !/// specifying name somewhere or updated?
+              
+              if(!newItem._id){ //if new car, add to list  
                 newList.push(newItem);
                
                 this.setState({items:newList, currentItem: {} });
                 console.log("this is the newItem", newItem);
               }        
-              else{ //if item was updated, clear the form 
+              else{ // clear the form 
                   this.setState({currentItem: {} });
               }       
           });
@@ -124,9 +92,9 @@ class CarApp extends React.Component {
         
         }
 
-        // //ks
+        
     deleteItem = () => {
-      // console.log(this.state.currentItem)
+      
       if (this.state.currentItem == {}) return
 
     let deleteId = this.state.currentItem.name;
@@ -144,37 +112,10 @@ class CarApp extends React.Component {
            
         })
         this.setState({currentItem: {} });//clear form
-        // console.log(json)
+       
        
     }
 
-
-      //     deleteItem = () => {
-      // console.log(this.state.currentItem)
-      // if (this.state.currentItem == {}) return
-
-      // let deleteId = this.state.currentItem.name
-     
-      // let url = "/api/delete/" + deleteId
-      // fetch(url)
-      // .then(res => res.json())
-      //       .then((json) => {
-      //         // console.log(items)
-      //           // if delete succeeded, update master list
-      //           // console.log(json.deleted)
-      //           // if (json.deleted.deletedCount > 0) {
-      //             let newList = this.state.items.filter(items => items.name !== deleteId.name)
-      //             console.log(items.name)
-      //             console.log(deleteId.name)
-      //               this.setState({items: newList, currentItem: {}})
-      //           // }
-      //        })
-      //   }
-
-
-
-   
-    
   selectItem = (event) => {
   const found = this.state.items.find((item) => {
     return item.name === event.target.innerText;
@@ -186,7 +127,7 @@ class CarApp extends React.Component {
   showDetail = (event) => {
         let  name = event.target.innerText;
         let newItem = this.state.items.find((item) => item.name == name);
-        this.setState({"currentItem": newItem})
+        this.setState({currentItem: newItem})
     }
    showChange = (event) => {
      let newItem = this.state.currentItem;
